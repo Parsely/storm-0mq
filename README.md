@@ -6,7 +6,7 @@ the transition from ZeroMQ to Netty as the default transport. You need to build
 a JAR out of this repository in order to revert 0.9 to use the ZeroMQ transport
 plugin.
 
-# Building the storm-zeromq JAR
+# Building the storm-0mq JAR
 
 To make Storm work with this plugin, you need to perform these steps:
 
@@ -24,7 +24,7 @@ To make Storm work with this plugin, you need to perform these steps:
 
 6. make sure the built JAR, `storm-0mq.jar` is in the `storm/lib` directory
 
-7. make sure the JAR bundled with jzmq, `jzmq.jar` is also in the `storm/lib`
+7. make sure the JAR bundled with jzmq, `zmq.jar` is also in the `storm/lib`
    directory
 
 # Verifying the JAR is loadable by Storm
