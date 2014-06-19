@@ -1,5 +1,5 @@
-(defproject storm/storm-0mq "0.9.0"
-  :dependencies [[storm/storm-core "0.9.0.1"]
+(defproject storm/storm-0mq "0.9.2-incubating"
+  :dependencies [[org.apache.storm/storm-core "0.9.2-incubating"]
                  [backtype/jzmq "2.1.0"]
                  ]
 
@@ -7,6 +7,6 @@
   :test-paths ["test/clj"]
   :target-path "target"
   :javac-options ["-target" "1.6" "-source" "1.6"]
-  :jvm-opts ["-Djava.library.path=/usr/local/lib:/opt/local/lib:/usr/lib"]
+  :jvm-opts ["-Djava.library.path=/usr/local/lib:/opt/local/lib:/usr/lib:/home/pixelmonkey/repos/storm-0mq/zeromq-2.1.7/lib"]
 
   :aot :all)

@@ -4,7 +4,7 @@
   (:import [backtype.storm.messaging IContext IConnection TaskMessage])
   (:import [java.nio ByteBuffer])
   (:import [org.zeromq ZMQ])
-  (:import [java.util Map])
+  (:import [java.util Map ArrayList Iterator])
   (:require [zilch.mq :as mq])
   (:gen-class
     :methods [^{:static true} [makeContext [java.util.Map] backtype.storm.messaging.IContext]]))
@@ -40,13 +40,20 @@
 
 (deftype ZMQConnection [socket]
   IConnection
-  (^TaskMessage recv [this ^int flags]
+  (^Iterator recv [this ^int flags ^int client-id]
     (require 'backtype.storm.messaging.zmq)
     (if-let [packet (mq/recv socket flags)]
-      (parse-packet packet)))
+      (let [buf (ArrayList.)]
+        (.add buf (parse-packet packet))
+        (.iterator buf))))
   (^void send [this ^int taskId ^bytes payload]
     (require 'backtype.storm.messaging.zmq)
-    (mq/send socket (mk-packet taskId payload) ZMQ/NOBLOCK)) ;; TODO: how to do backpressure if doing noblock?... need to only unblock if the target disappears
+    (mq/send socket (mk-packet taskId payload) ZMQ/NOBLOCK))
+  (^void send [this ^Iterator iter]
+    (require 'backtype.storm.messaging.zmq)
+    (while (.hasNext iter)
+      (let [task (.next iter)]
+        (mq/send socket (mk-packet (.task task) (.message task)) ZMQ/NOBLOCK))))
   (^void close [this]
     (.close socket)))
 
